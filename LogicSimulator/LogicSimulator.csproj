@@ -46,6 +46,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CircuitViewControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="CircuitViewControl.Designer.cs">
+      <DependentUpon>CircuitViewControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -54,6 +60,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Form1.resx">
+      <DependentUpon>Form1.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -62,6 +71,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -75,6 +85,75 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\push_icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\push_off.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\push_on.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\clock.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\clock_icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\toggle_off.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\toggle_on.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\toggle_on_icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\toggle_icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\and_gate.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\and_gate_icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\not_gate.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\not_gate_icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\or_gate.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\or_gate_icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\xor_gate.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\xor_gate_icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\light_icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\light_off.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\light_on.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\7seg_blank.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\7seg_segment.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\7seg_icon.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
