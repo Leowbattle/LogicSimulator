@@ -43,7 +43,29 @@ namespace LogicSimulator
 			g.ScaleTransform(scale, scale);
 			g.TranslateTransform(-camPos.X, -camPos.Y);
 
+			DrawGridLines(g);
+
 			g.DrawString("Test", font, Brushes.Black, 0, 0);
+		}
+
+		private void DrawGridLines(Graphics g)
+		{
+			var lineDistance = 50;
+			var numLinesX = Width / lineDistance / scale;
+			var numLinesY = Height / lineDistance / scale;
+
+			for (int i = 0; i <= numLinesX + 1; i++)
+			{
+				var x = i * lineDistance + camPos.X - camPos.X % lineDistance;
+
+				g.DrawLine(Pens.Black, x, camPos.Y, x, Height / scale + camPos.Y);
+			}
+			for (int i = 0; i <= numLinesY + 1; i++)
+			{
+				var y = i * lineDistance + camPos.Y - camPos.Y % lineDistance;
+
+				g.DrawLine(Pens.Black, camPos.X, y, Width / scale + camPos.X, y);
+			}
 		}
 
 		private void CircuitViewControl_MouseWheel(object sender, MouseEventArgs e)
