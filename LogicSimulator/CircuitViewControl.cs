@@ -26,14 +26,12 @@ namespace LogicSimulator
 			MouseUp += CircuitViewControl_MouseUp;
 			MouseMove += CircuitViewControl_MouseMove;
 			MouseWheel += CircuitViewControl_MouseWheel;
+
+			circuit = new Circuit();
+			circuit.Nodes.Add(new ExampleNode(new PointF(50, 50)));
 		}
 
-		List<Node> nodes = new List<Node>
-		{ 
-			new Node(new PointF(50, 50)),
-			new Node(new PointF(80, 90)),
-			new Node(new PointF(120, 40)),
-		};
+		Circuit circuit;
 
 		Font font = new Font(FontFamily.GenericMonospace, 10);
 
@@ -55,10 +53,7 @@ namespace LogicSimulator
 
 			g.DrawString("Test", font, Brushes.Black, 0, 0);
 
-			foreach (var node in nodes)
-			{
-				node.OnPaint(g);
-			}
+			circuit.OnPaint(g);
 		}
 
 		private void DrawGridLines(Graphics g)
@@ -140,8 +135,8 @@ namespace LogicSimulator
 
 			if (draggingNode)
 			{
-				draggedNode.rect.X += dx;
-				draggedNode.rect.Y += dy;
+				draggedNode.Rect.X += dx;
+				draggedNode.Rect.Y += dy;
 
 				Invalidate();
 			}
@@ -171,9 +166,9 @@ namespace LogicSimulator
 
 			PointF worldCursor = ScreenToWorld(e.Location);
 
-			foreach (var node in nodes)
+			foreach (var node in circuit.Nodes)
 			{
-				if (node.rect.Contains(worldCursor))
+				if (node.Rect.Contains(worldCursor))
 				{
 					draggingNode = true;
 					draggedNode = node;

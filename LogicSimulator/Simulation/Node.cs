@@ -7,18 +7,54 @@ using System.Threading.Tasks;
 
 namespace LogicSimulator.Simulation
 {
-	public class Node
+	public abstract class Node
 	{
-		public RectangleF rect;
+		public RectangleF Rect;
 
-		public Node(PointF p)
+		public WireConnector[] Inputs;
+		public WireConnector[] Outputs;
+
+		public Node(RectangleF rect, WireConnector[] inputs, WireConnector[] outputs)
 		{
-			rect = new RectangleF(p.X, p.Y, 40, 40);
+			Rect = rect;
+			Inputs = inputs;
+			Outputs = outputs;
 		}
+
+		public abstract void Update();
 
 		public virtual void OnPaint(Graphics g)
 		{
-			g.FillRectangle(Brushes.White, rect);
+			if (Program.DebugDraw)
+			{
+				g.DrawRectangle(Pens.Red, Rect.X, Rect.Y, Rect.Width, Rect.Height);
+			}
+
+			foreach (var input in Inputs)
+			{
+				DrawWireConnector(g, input);
+			}
+
+			foreach (var output in Outputs)
+			{
+				DrawWireConnector(g, output);
+			}
+		}
+
+		private void DrawWireConnector(Graphics g, WireConnector input)
+		{
+			float x = Rect.X + input.Pos.X - WireConnector.Radius;
+			float y = Rect.Y + input.Pos.Y - WireConnector.Radius;
+
+			Brush brush =
+				input.Type == WireConnectorType.Input ? WireConnector.InputColour : WireConnector.OutputColour;
+
+			g.FillEllipse(
+				brush,
+				x,
+				y,
+				WireConnector.Radius * 2,
+				WireConnector.Radius * 2);
 		}
 	}
 }
