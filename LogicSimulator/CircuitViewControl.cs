@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LogicSimulator.Simulation;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -27,6 +28,13 @@ namespace LogicSimulator
 			MouseWheel += CircuitViewControl_MouseWheel;
 		}
 
+		List<Node> nodes = new List<Node>
+		{ 
+			new Node(new PointF(50, 50)),
+			new Node(new PointF(80, 90)),
+			new Node(new PointF(120, 40)),
+		};
+
 		Font font = new Font(FontFamily.GenericMonospace, 10);
 
 		PointF camPos = new PointF(0, 0);
@@ -46,26 +54,58 @@ namespace LogicSimulator
 			DrawGridLines(g);
 
 			g.DrawString("Test", font, Brushes.Black, 0, 0);
+
+			foreach (var node in nodes)
+			{
+				node.OnPaint(g);
+			}
 		}
 
 		private void DrawGridLines(Graphics g)
 		{
-			var lineDistance = 50;
-			var numLinesX = Width / lineDistance / scale;
-			var numLinesY = Height / lineDistance / scale;
+			g.SmoothingMode = SmoothingMode.HighSpeed;
 
-			for (int i = 0; i <= numLinesX + 1; i++)
+			var lineDistance = 50;
+			var numLinesX = (int)(Width / lineDistance / scale + 1);
+			var numLinesY = (int)(Height / lineDistance / scale + 1);
+
+			//PointF[] linePoints = new PointF[numLinesX * numLinesY * 4];
+			//int pointI = 0;
+
+			for (int i = 0; i <= numLinesX; i++)
 			{
 				var x = i * lineDistance + camPos.X - camPos.X % lineDistance;
 
+				//linePoints[pointI++] = new PointF(x, camPos.Y);
+				//linePoints[pointI++] = new PointF(x, Height / scale + camPos.Y);
 				g.DrawLine(Pens.Black, x, camPos.Y, x, Height / scale + camPos.Y);
 			}
-			for (int i = 0; i <= numLinesY + 1; i++)
+			for (int i = 0; i <= numLinesY; i++)
 			{
 				var y = i * lineDistance + camPos.Y - camPos.Y % lineDistance;
 
+				//linePoints[pointI++] = new PointF(camPos.X, y);
+				//linePoints[pointI++] = new PointF(Width / scale + camPos.X, y);
 				g.DrawLine(Pens.Black, camPos.X, y, Width / scale + camPos.X, y);
 			}
+
+			//g.DrawLines(Pens.Black, linePoints);
+
+			g.SmoothingMode = SmoothingMode.AntiAlias;
+		}
+
+		public PointF ScreenToWorld(PointF screen)
+		{
+			return new PointF(
+				screen.X / scale + camPos.X,
+				screen.Y / scale + camPos.Y);
+		}
+
+		public PointF WorldToScreen(PointF world)
+		{
+			return new PointF(
+				(world.X - camPos.X) * scale,
+				(world.Y - camPos.Y) * scale);
 		}
 
 		private void CircuitViewControl_MouseWheel(object sender, MouseEventArgs e)
@@ -87,15 +127,28 @@ namespace LogicSimulator
 			Invalidate();
 		}
 
-		bool mouseDown = false;
+		bool panning = false;
 		PointF lastMousePos = new PointF(0, 0);
+
+		bool draggingNode = false;
+		Node draggedNode = null;
 
 		private void CircuitViewControl_MouseMove(object sender, MouseEventArgs e)
 		{
-			if (mouseDown)
+			float dx = (e.X - lastMousePos.X) / scale;
+			float dy = (e.Y - lastMousePos.Y) / scale;
+
+			if (draggingNode)
 			{
-				camPos.X -= (e.X - lastMousePos.X) / scale;
-				camPos.Y -= (e.Y - lastMousePos.Y) / scale;
+				draggedNode.rect.X += dx;
+				draggedNode.rect.Y += dy;
+
+				Invalidate();
+			}
+			else if (panning)
+			{
+				camPos.X -= dx;
+				camPos.Y -= dy;
 
 				Invalidate();
 			}
@@ -105,12 +158,30 @@ namespace LogicSimulator
 
 		private void CircuitViewControl_MouseUp(object sender, MouseEventArgs e)
 		{
-			mouseDown = false;
+			draggingNode = false;
+			draggedNode = null;
+
+			panning = false;
 		}
 
 		private void CircuitViewControl_MouseDown(object sender, MouseEventArgs e)
 		{
-			mouseDown = true;
+			draggingNode = false;
+			draggedNode = null;
+
+			PointF worldCursor = ScreenToWorld(e.Location);
+
+			foreach (var node in nodes)
+			{
+				if (node.rect.Contains(worldCursor))
+				{
+					draggingNode = true;
+					draggedNode = node;
+					return;
+				}
+			}
+
+			panning = true;
 		}
 	}
 }
