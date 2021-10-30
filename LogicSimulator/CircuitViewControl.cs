@@ -28,7 +28,9 @@ namespace LogicSimulator
 			MouseWheel += CircuitViewControl_MouseWheel;
 
 			circuit = new Circuit();
+
 			circuit.Nodes.Add(new ExampleNode(new PointF(50, 50)));
+			circuit.Nodes.Add(new ExampleNode(new PointF(150, 50)));
 		}
 
 		Circuit circuit;
@@ -122,10 +124,8 @@ namespace LogicSimulator
 			Invalidate();
 		}
 
-		bool panning = false;
+		DragType dragType;
 		PointF lastMousePos = new PointF(0, 0);
-
-		bool draggingNode = false;
 		Node draggedNode = null;
 
 		private void CircuitViewControl_MouseMove(object sender, MouseEventArgs e)
@@ -133,19 +133,29 @@ namespace LogicSimulator
 			float dx = (e.X - lastMousePos.X) / scale;
 			float dy = (e.Y - lastMousePos.Y) / scale;
 
-			if (draggingNode)
+			switch (dragType)
 			{
-				draggedNode.Rect.X += dx;
-				draggedNode.Rect.Y += dy;
+				case DragType.None:
+					break;
 
-				Invalidate();
-			}
-			else if (panning)
-			{
-				camPos.X -= dx;
-				camPos.Y -= dy;
+				case DragType.Camera:
+					camPos.X -= dx;
+					camPos.Y -= dy;
 
-				Invalidate();
+					Invalidate();
+
+					break;
+
+				case DragType.Node:
+					draggedNode.Rect.X += dx;
+					draggedNode.Rect.Y += dy;
+
+					Invalidate();
+
+					break;
+
+				case DragType.Wire:
+					break;
 			}
 
 			lastMousePos = e.Location;
@@ -153,30 +163,52 @@ namespace LogicSimulator
 
 		private void CircuitViewControl_MouseUp(object sender, MouseEventArgs e)
 		{
-			draggingNode = false;
+			dragType = DragType.None;
 			draggedNode = null;
-
-			panning = false;
 		}
 
 		private void CircuitViewControl_MouseDown(object sender, MouseEventArgs e)
 		{
-			draggingNode = false;
+			dragType = DragType.None;
 			draggedNode = null;
 
 			PointF worldCursor = ScreenToWorld(e.Location);
 
 			foreach (var node in circuit.Nodes)
 			{
+				var en = Enumerable.Concat(node.Inputs, node.Outputs);
+				foreach (var wc in en)
+				{
+					var posx = node.Rect.X + wc.Pos.X;
+					var posy = node.Rect.Y + wc.Pos.Y;
+					var r = WireConnector.Radius;
+
+					var rect = RectangleF.FromLTRB(posx - r, posy - r, posx + r, posy + r);
+					if (rect.Contains(worldCursor))
+					{
+						dragType = DragType.Wire;
+						Console.WriteLine("wire");
+						return;
+					}
+				}
+
 				if (node.Rect.Contains(worldCursor))
 				{
-					draggingNode = true;
+					dragType = DragType.Node;
 					draggedNode = node;
 					return;
 				}
 			}
 
-			panning = true;
+			dragType = DragType.Camera;
 		}
+	}
+
+	enum DragType
+	{
+		None,
+		Camera,
+		Node,
+		Wire
 	}
 }
