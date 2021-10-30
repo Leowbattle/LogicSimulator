@@ -12,6 +12,9 @@ namespace LogicSimulator.Simulation
 		public Node From;
 		public Node To;
 
+		public WireConnector FromC;
+		public WireConnector ToC;
+
 		public bool Value;
 	}
 

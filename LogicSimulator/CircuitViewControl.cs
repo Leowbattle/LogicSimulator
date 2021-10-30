@@ -132,6 +132,10 @@ namespace LogicSimulator
 		// DragType.Node
 		Node draggedNode = null;
 
+		// DragType.Wire
+		WireConnector wcDrag;
+		Node wcNode;
+
 		private void CircuitViewControl_MouseMove(object sender, MouseEventArgs e)
 		{
 			float dx = (e.X - lastMousePos.X) / scale;
@@ -179,10 +183,28 @@ namespace LogicSimulator
 
 		private void CircuitViewControl_MouseUp(object sender, MouseEventArgs e)
 		{
+			if (dragType == DragType.Wire)
+			{
+				var (wcEnd, nodeEnd) = PointOverWC(ScreenToWorld(e.Location));
+				if (wcEnd != null && wcEnd != wcDrag)
+				{
+					var w = new Wire();
+
+					w.From = wcNode;
+					w.To = nodeEnd;
+
+					w.FromC = wcDrag;
+					w.ToC = wcEnd;
+
+					wcDrag.Wire = w;
+					wcEnd.Wire = w;
+				}
+
+				Invalidate();
+			}
+
 			dragType = DragType.None;
 			draggedNode = null;
-
-			Invalidate();
 		}
 
 		private void CircuitViewControl_MouseDown(object sender, MouseEventArgs e)
@@ -207,7 +229,8 @@ namespace LogicSimulator
 					if (rect.Contains(worldCursor))
 					{
 						dragType = DragType.Wire;
-						Console.WriteLine("wire");
+						wcDrag = wc;
+						wcNode = node;
 						return;
 					}
 				}
@@ -221,6 +244,28 @@ namespace LogicSimulator
 			}
 
 			dragType = DragType.Camera;
+		}
+
+		(WireConnector, Node) PointOverWC(PointF p)
+		{
+			foreach (var node in circuit.Nodes)
+			{
+				var en = Enumerable.Concat(node.Inputs, node.Outputs);
+				foreach (var wc in en)
+				{
+					var posx = node.Rect.X + wc.Pos.X;
+					var posy = node.Rect.Y + wc.Pos.Y;
+					var r = WireConnector.Radius;
+
+					var rect = RectangleF.FromLTRB(posx - r, posy - r, posx + r, posy + r);
+					if (rect.Contains(p))
+					{
+						return (wc, node);
+					}
+				}
+			}
+
+			return (null, null);
 		}
 	}
 

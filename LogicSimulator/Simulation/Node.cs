@@ -37,8 +37,25 @@ namespace LogicSimulator.Simulation
 
 			foreach (var output in Outputs)
 			{
+				DrawWire(g, output, output.Wire);
 				DrawWireConnector(g, output);
 			}
+		}
+
+		private void DrawWire(Graphics g, WireConnector c, Wire wire)
+		{
+			if (wire == null)
+			{
+				return;
+			}
+
+			float x1 = Rect.X + c.Pos.X;
+			float y1 = Rect.Y + c.Pos.Y;
+
+			float x2 = wire.To.Rect.X + wire.ToC.Pos.X;
+			float y2 = wire.To.Rect.Y + wire.ToC.Pos.Y;
+
+			g.DrawLine(Pens.Black, x1, y1, x2, y2);
 		}
 
 		private void DrawWireConnector(Graphics g, WireConnector input)
