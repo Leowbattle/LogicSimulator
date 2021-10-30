@@ -52,6 +52,7 @@ namespace LogicSimulator
 			g.TranslateTransform(-camPos.X, -camPos.Y);
 
 			DrawGridLines(g);
+			DrawWireDrag(g);
 
 			g.DrawString("Test", font, Brushes.Black, 0, 0);
 
@@ -125,7 +126,10 @@ namespace LogicSimulator
 		}
 
 		DragType dragType;
+		PointF dragStart;
 		PointF lastMousePos = new PointF(0, 0);
+		
+		// DragType.Node
 		Node draggedNode = null;
 
 		private void CircuitViewControl_MouseMove(object sender, MouseEventArgs e)
@@ -155,16 +159,30 @@ namespace LogicSimulator
 					break;
 
 				case DragType.Wire:
+					Invalidate();
 					break;
 			}
 
 			lastMousePos = e.Location;
 		}
 
+		void DrawWireDrag(Graphics g)
+		{
+			if (dragType != DragType.Wire)
+			{
+				return;
+			}
+
+			PointF worldCursor = ScreenToWorld(lastMousePos);
+			g.DrawLine(Pens.Red, dragStart, worldCursor);
+		}
+
 		private void CircuitViewControl_MouseUp(object sender, MouseEventArgs e)
 		{
 			dragType = DragType.None;
 			draggedNode = null;
+
+			Invalidate();
 		}
 
 		private void CircuitViewControl_MouseDown(object sender, MouseEventArgs e)
@@ -173,6 +191,8 @@ namespace LogicSimulator
 			draggedNode = null;
 
 			PointF worldCursor = ScreenToWorld(e.Location);
+
+			dragStart = worldCursor;
 
 			foreach (var node in circuit.Nodes)
 			{
