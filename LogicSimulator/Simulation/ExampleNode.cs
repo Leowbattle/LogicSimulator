@@ -10,23 +10,25 @@ namespace LogicSimulator.Simulation
 	public class ExampleNode : Node
 	{
 		public ExampleNode(PointF pos) : base(
-			new RectangleF(pos.X, pos.Y, 40, 40),
-			new Input[]
-			{
-				new Input(new PointF(0, 20))
-			},
-			new Output[]
-			{
-				new Output(new PointF(40, 10)),
-				new Output(new PointF(40, 30)),
-			})
+			new RectangleF(pos.X, pos.Y, 40, 40))
 		{
-
+			Inputs = new Input[]
+			{
+				new Input(this, new PointF(0, 5)),
+				new Input(this, new PointF(0, 15)),
+				new Input(this, new PointF(0, 25)),
+				new Input(this, new PointF(0, 35)),
+			};
+			Outputs = new Output[]
+			{
+				new Output(this, new PointF(40, 10)),
+				new Output(this, new PointF(40, 30)),
+			};
 		}
 
 		public override void Update()
 		{
-			
+
 		}
 
 		public override void OnPaint(Graphics g)

@@ -55,7 +55,19 @@ namespace LogicSimulator
 
 			g.DrawString("Test", font, Brushes.Black, 0, 0);
 
+			DrawWireDrag(g);
+
 			circuit.OnPaint(g);
+		}
+
+		private void DrawWireDrag(Graphics g)
+		{
+			if (dragType != DragType.Wire)
+			{
+				return;
+			}
+
+			g.DrawLine(Pens.Red, dragStart, ScreenToWorld(lastMousePos));
 		}
 
 		private void DrawGridLines(Graphics g)
@@ -127,6 +139,8 @@ namespace LogicSimulator
 		DragType dragType;
 		PointF lastMousePos = new PointF(0, 0);
 		Node draggedNode = null;
+		PointF dragStart;
+		Output draggedOutput;
 
 		private void CircuitViewControl_MouseMove(object sender, MouseEventArgs e)
 		{
@@ -155,6 +169,7 @@ namespace LogicSimulator
 					break;
 
 				case DragType.Wire:
+					Invalidate();
 					break;
 			}
 
@@ -163,16 +178,56 @@ namespace LogicSimulator
 
 		private void CircuitViewControl_MouseUp(object sender, MouseEventArgs e)
 		{
+			if (dragType == DragType.Wire)
+			{
+				PointF worldCursor = ScreenToWorld(e.Location);
+
+				foreach (var node in circuit.Nodes)
+				{
+					foreach (var i in node.Inputs)
+					{
+						var posx = node.Rect.X + i.Pos.X;
+						var posy = node.Rect.Y + i.Pos.Y;
+						var r = 5;
+
+						var rect = RectangleF.FromLTRB(posx - r, posy - r, posx + r, posy + r);
+						if (rect.Contains(worldCursor))
+						{
+							Console.WriteLine("drop");
+
+							if (!draggedOutput.Inputs.Contains(i))
+							{
+								if (i.Source != null)
+								{
+									i.Source.Inputs.Remove(i);
+								}
+
+								i.Source = draggedOutput;
+								draggedOutput.Inputs.Add(i);
+							}
+
+							goto loopend;
+						}
+					}
+				}
+			}
+			loopend:;
+
 			dragType = DragType.None;
 			draggedNode = null;
+			draggedOutput = null;
+
+			Invalidate();
 		}
 
 		private void CircuitViewControl_MouseDown(object sender, MouseEventArgs e)
 		{
 			dragType = DragType.None;
 			draggedNode = null;
+			draggedOutput = null;
 
 			PointF worldCursor = ScreenToWorld(e.Location);
+			dragStart = worldCursor;
 
 			foreach (var node in circuit.Nodes)
 			{
@@ -185,8 +240,11 @@ namespace LogicSimulator
 					var rect = RectangleF.FromLTRB(posx - r, posy - r, posx + r, posy + r);
 					if (rect.Contains(worldCursor))
 					{
-						dragType = DragType.Wire;
 						Console.WriteLine("wire");
+
+						dragType = DragType.Wire;
+						draggedOutput = o;
+
 						return;
 					}
 				}

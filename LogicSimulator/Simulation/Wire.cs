@@ -9,26 +9,30 @@ namespace LogicSimulator.Simulation
 {
 	public class Input
 	{
+		public Node Node;
 		public PointF Pos;
 
 		// Where this input will read a value from
 		public Output Source;
 
-		public Input(PointF pos)
+		public Input(Node node, PointF pos)
 		{
+			Node = node;
 			Pos = pos;
 		}
 	}
 
 	public class Output
 	{
+		public Node Node;
 		public PointF Pos;
 
 		public bool Value;
-		public List<Input> Inputs;
+		public List<Input> Inputs = new List<Input>();
 
-		public Output(PointF pos)
+		public Output(Node node, PointF pos)
 		{
+			Node = node;
 			Pos = pos;
 		}
 	}

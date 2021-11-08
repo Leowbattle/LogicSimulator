@@ -14,11 +14,9 @@ namespace LogicSimulator.Simulation
 		public Input[] Inputs;
 		public Output[] Outputs;
 
-		public Node(RectangleF rect, Input[] inputs, Output[] outputs)
+		public Node(RectangleF rect)
 		{
 			Rect = rect;
-			Inputs = inputs;
-			Outputs = outputs;
 		}
 
 		public abstract void Update();
@@ -56,12 +54,20 @@ namespace LogicSimulator.Simulation
 				radius * 2);
 		}
 
-		private void DrawOutput(Graphics g, Output input)
+		private void DrawOutput(Graphics g, Output output)
 		{
 			float radius = 5;
 
-			float x = Rect.X + input.Pos.X - radius;
-			float y = Rect.Y + input.Pos.Y - radius;
+			float x = Rect.X + output.Pos.X - radius;
+			float y = Rect.Y + output.Pos.Y - radius;
+
+			foreach (var i in output.Inputs)
+			{
+				float x2 = i.Node.Rect.X + i.Pos.X;
+				float y2 = i.Node.Rect.Y + i.Pos.Y;
+
+				g.DrawLine(Pens.Black, x + radius, y + radius, x2, y2);
+			}
 
 			g.FillEllipse(
 				Brushes.Gray,
