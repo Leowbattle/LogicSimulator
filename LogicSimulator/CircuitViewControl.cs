@@ -31,6 +31,8 @@ namespace LogicSimulator
 
 			circuit.Nodes.Add(new ExampleNode(new PointF(50, 50)));
 			circuit.Nodes.Add(new ExampleNode(new PointF(150, 50)));
+			circuit.Nodes.Add(new ExampleNode(new PointF(50, 150)));
+			circuit.Nodes.Add(new ExampleNode(new PointF(150, 150)));
 		}
 
 		Circuit circuit;
