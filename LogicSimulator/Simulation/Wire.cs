@@ -7,34 +7,29 @@ using System.Threading.Tasks;
 
 namespace LogicSimulator.Simulation
 {
-	public class Wire
+	public class Input
 	{
-		public Node From;
-		public Node To;
-
-		public bool Value;
-	}
-
-	public class WireConnector
-	{
-		public Wire Wire;
 		public PointF Pos;
-		public WireConnectorType Type;
 
-		public WireConnector(PointF pos, WireConnectorType type)
+		// Where this input will read a value from
+		public Output Source;
+
+		public Input(PointF pos)
 		{
 			Pos = pos;
-			Type = type;
 		}
-
-		public const float Radius = 5;
-		public static Brush InputColour = Brushes.LightGray;
-		public static Brush OutputColour = Brushes.Gray;
 	}
 
-	public enum WireConnectorType
+	public class Output
 	{
-		Input,
-		Output
+		public PointF Pos;
+
+		public bool Value;
+		public List<Input> Inputs;
+
+		public Output(PointF pos)
+		{
+			Pos = pos;
+		}
 	}
 }

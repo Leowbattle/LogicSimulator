@@ -176,12 +176,11 @@ namespace LogicSimulator
 
 			foreach (var node in circuit.Nodes)
 			{
-				var en = Enumerable.Concat(node.Inputs, node.Outputs);
-				foreach (var wc in en)
+				foreach (var o in node.Outputs)
 				{
-					var posx = node.Rect.X + wc.Pos.X;
-					var posy = node.Rect.Y + wc.Pos.Y;
-					var r = WireConnector.Radius;
+					var posx = node.Rect.X + o.Pos.X;
+					var posy = node.Rect.Y + o.Pos.Y;
+					var r = 5;
 
 					var rect = RectangleF.FromLTRB(posx - r, posy - r, posx + r, posy + r);
 					if (rect.Contains(worldCursor))

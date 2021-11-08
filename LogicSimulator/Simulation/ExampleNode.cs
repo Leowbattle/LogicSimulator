@@ -11,13 +11,14 @@ namespace LogicSimulator.Simulation
 	{
 		public ExampleNode(PointF pos) : base(
 			new RectangleF(pos.X, pos.Y, 40, 40),
-			new WireConnector[]
+			new Input[]
 			{
-				new WireConnector(new PointF(0, 20), WireConnectorType.Input)
+				new Input(new PointF(0, 20))
 			},
-			new WireConnector[]
+			new Output[]
 			{
-				new WireConnector(new PointF(40, 20), WireConnectorType.Output)
+				new Output(new PointF(40, 10)),
+				new Output(new PointF(40, 30)),
 			})
 		{
 

@@ -11,10 +11,10 @@ namespace LogicSimulator.Simulation
 	{
 		public RectangleF Rect;
 
-		public WireConnector[] Inputs;
-		public WireConnector[] Outputs;
+		public Input[] Inputs;
+		public Output[] Outputs;
 
-		public Node(RectangleF rect, WireConnector[] inputs, WireConnector[] outputs)
+		public Node(RectangleF rect, Input[] inputs, Output[] outputs)
 		{
 			Rect = rect;
 			Inputs = inputs;
@@ -32,29 +32,43 @@ namespace LogicSimulator.Simulation
 
 			foreach (var input in Inputs)
 			{
-				DrawWireConnector(g, input);
+				DrawInput(g, input);
 			}
 
 			foreach (var output in Outputs)
 			{
-				DrawWireConnector(g, output);
+				DrawOutput(g, output);
 			}
 		}
 
-		private void DrawWireConnector(Graphics g, WireConnector input)
+		private void DrawInput(Graphics g, Input input)
 		{
-			float x = Rect.X + input.Pos.X - WireConnector.Radius;
-			float y = Rect.Y + input.Pos.Y - WireConnector.Radius;
+			float radius = 5;
 
-			Brush brush =
-				input.Type == WireConnectorType.Input ? WireConnector.InputColour : WireConnector.OutputColour;
+			float x = Rect.X + input.Pos.X - radius;
+			float y = Rect.Y + input.Pos.Y - radius;
 
 			g.FillEllipse(
-				brush,
+				Brushes.LightGray,
 				x,
 				y,
-				WireConnector.Radius * 2,
-				WireConnector.Radius * 2);
+				radius * 2,
+				radius * 2);
+		}
+
+		private void DrawOutput(Graphics g, Output input)
+		{
+			float radius = 5;
+
+			float x = Rect.X + input.Pos.X - radius;
+			float y = Rect.Y + input.Pos.Y - radius;
+
+			g.FillEllipse(
+				Brushes.Gray,
+				x,
+				y,
+				radius * 2,
+				radius * 2);
 		}
 	}
 }
