@@ -16,5 +16,10 @@ namespace LogicSimulator
 		{
 			InitializeComponent();
 		}
+
+		private void switchButton_Click(object sender, EventArgs e)
+		{
+			throw new Exception("oh no");
+		}
 	}
 }
