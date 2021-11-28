@@ -1,4 +1,5 @@
 ﻿using LogicSimulator.Simulation;
+using LogicSimulator.Simulation.Nodes;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -31,14 +32,24 @@ namespace LogicSimulator
 
 			circuit.Nodes.Add(new ExampleNode(new PointF(50, 50)));
 			circuit.Nodes.Add(new ExampleNode(new PointF(150, 50)));
+
+			circuit.Nodes.Add(new Switch(new PointF(200, 200)));
 		}
 
-		Circuit circuit;
+		public Circuit circuit;
+
+		public void AddNode(Node node)
+		{
+			circuit.Nodes.Add(node);
+			Invalidate();
+		}
 
 		Font font = new Font(FontFamily.GenericMonospace, 10);
 
 		PointF camPos = new PointF(0, 0);
 		float scale = 1;
+
+		public PointF ScreenCentre => ScreenToWorld(new PointF(Width / 2, Height / 2));
 
 		protected override void OnPaint(PaintEventArgs pe)
 		{
@@ -141,9 +152,15 @@ namespace LogicSimulator
 		Node draggedNode = null;
 		PointF dragStart;
 		Output draggedOutput;
+		bool dragMoved;
 
 		private void CircuitViewControl_MouseMove(object sender, MouseEventArgs e)
 		{
+			if (dragType != DragType.None)
+			{
+				dragMoved = true;
+			}
+
 			float dx = (e.X - lastMousePos.X) / scale;
 			float dy = (e.Y - lastMousePos.Y) / scale;
 
@@ -178,10 +195,10 @@ namespace LogicSimulator
 
 		private void CircuitViewControl_MouseUp(object sender, MouseEventArgs e)
 		{
+			PointF worldCursor = ScreenToWorld(e.Location);
+
 			if (dragType == DragType.Wire)
 			{
-				PointF worldCursor = ScreenToWorld(e.Location);
-
 				foreach (var node in circuit.Nodes)
 				{
 					foreach (var i in node.Inputs)
@@ -211,11 +228,28 @@ namespace LogicSimulator
 					}
 				}
 			}
+			else if (dragType == DragType.Node)
+			{
+				foreach (var node in circuit.Nodes)
+				{
+					if (node.Rect.Contains(worldCursor))
+					{
+						if (node is InputNode inp && !dragMoved)
+						{
+							Console.WriteLine("interact");
+							inp.Interact(PointF.Subtract(worldCursor, new SizeF(node.Rect.Location)));
+						}
+
+						goto loopend;
+					}
+				}
+			}
 			loopend:;
 
 			dragType = DragType.None;
 			draggedNode = null;
 			draggedOutput = null;
+			dragMoved = false;
 
 			Invalidate();
 		}
@@ -225,9 +259,14 @@ namespace LogicSimulator
 			dragType = DragType.None;
 			draggedNode = null;
 			draggedOutput = null;
+			dragMoved = false;
 
 			PointF worldCursor = ScreenToWorld(e.Location);
 			dragStart = worldCursor;
+
+			// You cannot remove items from a list while iterating through it, so nodes to be deleted are added
+			// to another list and deleted after the main iteration.
+			List<Node> deleteList = new List<Node>();
 
 			foreach (var node in circuit.Nodes)
 			{
@@ -251,10 +290,22 @@ namespace LogicSimulator
 
 				if (node.Rect.Contains(worldCursor))
 				{
-					dragType = DragType.Node;
-					draggedNode = node;
-					return;
+					if (e.Button == MouseButtons.Left)
+					{
+						dragType = DragType.Node;
+						draggedNode = node;
+						return;
+					}
+					else if (e.Button == MouseButtons.Right)
+					{
+						deleteList.Add(node);
+					}
 				}
+			}
+
+			foreach (var node in deleteList)
+			{
+				circuit.DeleteNode(node);
 			}
 
 			dragType = DragType.Camera;

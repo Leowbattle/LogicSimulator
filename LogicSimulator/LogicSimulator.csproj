@@ -66,6 +66,8 @@
     <Compile Include="Simulation\Circuit.cs" />
     <Compile Include="Simulation\ExampleNode.cs" />
     <Compile Include="Simulation\Node.cs" />
+    <Compile Include="Simulation\Nodes\InputNode.cs" />
+    <Compile Include="Simulation\Nodes\Switch.cs" />
     <Compile Include="Simulation\Wire.cs" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>

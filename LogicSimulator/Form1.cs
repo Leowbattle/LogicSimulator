@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LogicSimulator.Simulation.Nodes;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -19,7 +20,7 @@ namespace LogicSimulator
 
 		private void switchButton_Click(object sender, EventArgs e)
 		{
-			throw new Exception("oh no");
+			circuitViewControl1.AddNode(new Switch(circuitViewControl1.ScreenCentre));
 		}
 	}
 }

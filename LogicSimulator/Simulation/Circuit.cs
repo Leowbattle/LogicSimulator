@@ -23,5 +23,25 @@ namespace LogicSimulator.Simulation
 				node.OnPaint(g);
 			}
 		}
+
+		public void DeleteNode(Node node)
+		{
+			foreach (var inp in node.Inputs)
+			{
+				if (inp.Source == null)
+				{
+					continue;
+				}
+				inp.Source.Inputs.Remove(inp);
+			}
+			foreach (var outp in node.Outputs)
+			{
+				foreach (var inp in outp.Inputs)
+				{
+					inp.Source = null;
+				}
+			}
+			Nodes.Remove(node);
+		}
 	}
 }

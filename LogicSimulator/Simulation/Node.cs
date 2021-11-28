@@ -11,8 +11,8 @@ namespace LogicSimulator.Simulation
 	{
 		public RectangleF Rect;
 
-		public Input[] Inputs;
-		public Output[] Outputs;
+		public Input[] Inputs = Array.Empty<Input>();
+		public Output[] Outputs = Array.Empty<Output>();
 
 		public Node(RectangleF rect)
 		{
