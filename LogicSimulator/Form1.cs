@@ -22,5 +22,10 @@ namespace LogicSimulator
 		{
 			circuitViewControl1.AddNode(new Switch(circuitViewControl1.ScreenCentre));
 		}
+
+		private void lightButton_Click(object sender, EventArgs e)
+		{
+			circuitViewControl1.AddNode(new LightNode(circuitViewControl1.ScreenCentre));
+		}
 	}
 }

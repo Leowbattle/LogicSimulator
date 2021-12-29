@@ -9,7 +9,7 @@ namespace LogicSimulator
 {
 	static class Program
 	{
-		public static bool DebugDraw = true;
+		public static bool DebugDraw = false;
 
 		static void UnhandledException(object sender, UnhandledExceptionEventArgs e)
 		{

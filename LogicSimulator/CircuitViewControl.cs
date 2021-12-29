@@ -237,7 +237,7 @@ namespace LogicSimulator
 						if (node is InputNode inp && !dragMoved)
 						{
 							Console.WriteLine("interact");
-							inp.Interact(PointF.Subtract(worldCursor, new SizeF(node.Rect.Location)));
+							inp.Interact(PointF.Subtract(worldCursor, new SizeF(node.Rect.Location)), circuit);
 						}
 
 						goto loopend;

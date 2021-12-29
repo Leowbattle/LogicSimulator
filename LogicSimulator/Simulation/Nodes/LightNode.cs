@@ -7,33 +7,27 @@ using System.Threading.Tasks;
 
 namespace LogicSimulator.Simulation.Nodes
 {
-	public class Switch : InputNode
+	public class LightNode : OutputNode
 	{
 		static int nodeSize = 40;
 
-		public Switch(PointF pos) : base(new RectangleF(pos.X, pos.Y, nodeSize, nodeSize))
+		public LightNode(PointF pos) : base(new RectangleF(pos.X, pos.Y, nodeSize, nodeSize))
 		{
-			Outputs = new Output[]
+			Inputs = new Input[]
 			{
-				new Output(this, new PointF(40, 20))
+				new Input(this, new PointF(20, 40))
 			};
 		}
 
-		bool isOn;
-
-		public override void Interact(PointF point, Circuit circuit)
-		{
-			isOn = !isOn;
-			circuit.EvaluateCircuit(this);
-		}
+		bool isOn = false;
 
 		public override void Update()
 		{
-			Outputs[0].Value = isOn;
+			isOn = Inputs[0].Source.Value;
 		}
 
-		static Bitmap offImg = Properties.Resources.toggle_off;
-		static Bitmap onImg = Properties.Resources.toggle_on;
+		static Bitmap offImg = Properties.Resources.light_off;
+		static Bitmap onImg = Properties.Resources.light_on;
 
 		public override void OnPaint(Graphics g)
 		{

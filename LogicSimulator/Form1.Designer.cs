@@ -469,6 +469,7 @@ namespace LogicSimulator
 			this.lightButton.Text = "Light";
 			this.lightButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
 			this.lightButton.UseVisualStyleBackColor = true;
+			this.lightButton.Click += new System.EventHandler(this.lightButton_Click);
 			// 
 			// _7segButton
 			// 

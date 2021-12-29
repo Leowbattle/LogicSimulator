@@ -7,12 +7,10 @@ using System.Threading.Tasks;
 
 namespace LogicSimulator.Simulation.Nodes
 {
-	public abstract class InputNode : Node
+	public abstract class OutputNode : Node
 	{
-		protected InputNode(RectangleF rect) : base(rect)
+		public OutputNode(RectangleF rect) : base(rect)
 		{
 		}
-
-		public abstract void Interact(PointF point, Circuit circuit);
 	}
 }
