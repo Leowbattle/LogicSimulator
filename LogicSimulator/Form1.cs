@@ -32,5 +32,20 @@ namespace LogicSimulator
 		{
 			circuitViewControl1.AddNode(new NotGate(circuitViewControl1.ScreenCentre));
 		}
+
+		private void andGateButton_Click(object sender, EventArgs e)
+		{
+			circuitViewControl1.AddNode(new AndGate(circuitViewControl1.ScreenCentre));
+		}
+
+		private void orGateButton_Click(object sender, EventArgs e)
+		{
+			circuitViewControl1.AddNode(new OrGate(circuitViewControl1.ScreenCentre));
+		}
+
+		private void xorGateButton_Click(object sender, EventArgs e)
+		{
+			circuitViewControl1.AddNode(new XorGate(circuitViewControl1.ScreenCentre));
+		}
 	}
 }

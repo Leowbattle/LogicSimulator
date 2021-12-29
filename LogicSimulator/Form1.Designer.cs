@@ -422,6 +422,7 @@ namespace LogicSimulator
 			this.andGateButton.Text = "AND Gate";
 			this.andGateButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
 			this.andGateButton.UseVisualStyleBackColor = true;
+			this.andGateButton.Click += new System.EventHandler(this.andGateButton_Click);
 			// 
 			// orGateButton
 			// 
@@ -434,6 +435,7 @@ namespace LogicSimulator
 			this.orGateButton.Text = "OR Gate";
 			this.orGateButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
 			this.orGateButton.UseVisualStyleBackColor = true;
+			this.orGateButton.Click += new System.EventHandler(this.orGateButton_Click);
 			// 
 			// xorGateButton
 			// 
@@ -446,6 +448,7 @@ namespace LogicSimulator
 			this.xorGateButton.Text = "XOR Gate";
 			this.xorGateButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
 			this.xorGateButton.UseVisualStyleBackColor = true;
+			this.xorGateButton.Click += new System.EventHandler(this.xorGateButton_Click);
 			// 
 			// label3
 			// 

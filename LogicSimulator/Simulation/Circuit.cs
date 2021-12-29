@@ -96,7 +96,7 @@ namespace LogicSimulator.Simulation
 				var doUpdate = true;
 				foreach (var input in node.Inputs)
 				{
-					var n = input.Source.Node;
+					var n = input.Source?.Node;
 					if (pes.Contains(n) && !visited.Contains(n))
 					{
 						doUpdate = false;

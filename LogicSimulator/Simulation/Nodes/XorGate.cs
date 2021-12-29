@@ -7,15 +7,16 @@ using System.Threading.Tasks;
 
 namespace LogicSimulator.Simulation.Nodes
 {
-	public class NotGate : LogicNode
+	public class XorGate : LogicNode
 	{
 		static int nodeSize = 40;
 
-		public NotGate(PointF pos) : base(new RectangleF(pos.X, pos.Y, nodeSize, nodeSize))
+		public XorGate(PointF pos) : base(new RectangleF(pos.X, pos.Y, nodeSize, nodeSize))
 		{
 			Inputs = new Input[]
 			{
-				new Input(this, new PointF(0, 20))
+				new Input(this, new PointF(0, 10)),
+				new Input(this, new PointF(0, 30)),
 			};
 			Outputs = new Output[]
 			{
@@ -25,16 +26,16 @@ namespace LogicSimulator.Simulation.Nodes
 
 		public override void Update()
 		{
-			if (Inputs[0].Source == null)
+			if (Inputs[0].Source == null || Inputs[1].Source == null)
 			{
 				Outputs[0].Value = false;
 				return;
 			}
 
-			Outputs[0].Value = !Inputs[0].Source.Value;
+			Outputs[0].Value = Inputs[0].Source.Value ^ Inputs[1].Source.Value;
 		}
 
-		static Bitmap img = Properties.Resources.not_gate;
+		static Bitmap img = Properties.Resources.xor_gate;
 
 		public override void OnPaint(Graphics g)
 		{
