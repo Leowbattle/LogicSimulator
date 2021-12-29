@@ -116,7 +116,7 @@ namespace LogicSimulator.Simulation
 					foreach (var i in output.Inputs)
 					{
 						var node2 = i.Node;
-						if (!visited.Contains(node))
+						if (!visited.Contains(node2))
 						{
 							queue.Enqueue(node2);
 						}

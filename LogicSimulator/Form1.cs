@@ -27,5 +27,10 @@ namespace LogicSimulator
 		{
 			circuitViewControl1.AddNode(new LightNode(circuitViewControl1.ScreenCentre));
 		}
+
+		private void notGateButton_Click(object sender, EventArgs e)
+		{
+			circuitViewControl1.AddNode(new NotGate(circuitViewControl1.ScreenCentre));
+		}
 	}
 }

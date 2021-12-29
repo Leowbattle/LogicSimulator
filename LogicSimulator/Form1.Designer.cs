@@ -409,6 +409,7 @@ namespace LogicSimulator
 			this.notGateButton.Text = "NOT Gate";
 			this.notGateButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
 			this.notGateButton.UseVisualStyleBackColor = true;
+			this.notGateButton.Click += new System.EventHandler(this.notGateButton_Click);
 			// 
 			// andGateButton
 			// 

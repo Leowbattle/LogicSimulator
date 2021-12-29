@@ -221,6 +221,8 @@ namespace LogicSimulator
 
 								i.Source = draggedOutput;
 								draggedOutput.Inputs.Add(i);
+
+								circuit.EvaluateCircuit(draggedOutput.Node);
 							}
 
 							goto loopend;
