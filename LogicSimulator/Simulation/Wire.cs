@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace LogicSimulator.Simulation
 {
+	[Serializable]
 	public class Input
 	{
 		public Node Node;
@@ -22,6 +23,7 @@ namespace LogicSimulator.Simulation
 		}
 	}
 
+	[Serializable]
 	public class Output
 	{
 		public Node Node;

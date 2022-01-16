@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace LogicSimulator.Simulation.Nodes
 {
+	[Serializable]
 	public abstract class LogicNode : Node
 	{
 		protected LogicNode(RectangleF rect) : base(rect)

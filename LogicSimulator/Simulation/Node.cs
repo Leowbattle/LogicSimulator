@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace LogicSimulator.Simulation
 {
+	[Serializable]
 	public abstract class Node
 	{
 		public RectangleF Rect;

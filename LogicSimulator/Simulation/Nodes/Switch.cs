@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace LogicSimulator.Simulation.Nodes
 {
+	[Serializable]
 	public class Switch : InputNode
 	{
 		static int nodeSize = 40;

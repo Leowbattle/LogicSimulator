@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace LogicSimulator.Simulation.Nodes
 {
+	[Serializable]
 	public class LightNode : OutputNode
 	{
 		static int nodeSize = 40;

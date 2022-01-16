@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace LogicSimulator.Simulation
 {
+	[Serializable]
 	public class ExampleNode : Node
 	{
 		public ExampleNode(PointF pos) : base(

@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace LogicSimulator.Simulation.Nodes
 {
+	[Serializable]
 	public class NotGate : LogicNode
 	{
 		static int nodeSize = 40;
@@ -27,7 +28,7 @@ namespace LogicSimulator.Simulation.Nodes
 		{
 			if (Inputs[0].Source == null)
 			{
-				Outputs[0].Value = false;
+				Outputs[0].Value = true;
 				return;
 			}
 
