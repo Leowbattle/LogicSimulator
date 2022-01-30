@@ -1,6 +1,5 @@
 ﻿using LogicSimulator.Simulation;
 using LogicSimulator.Simulation.Nodes;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -52,13 +51,6 @@ namespace LogicSimulator
 			circuitViewControl1.AddNode(new XorGate(circuitViewControl1.ScreenCentre));
 		}
 
-		JsonSerializerSettings jsonSerializerSettings = new JsonSerializerSettings
-		{
-			ReferenceLoopHandling = ReferenceLoopHandling.Serialize,
-			PreserveReferencesHandling = PreserveReferencesHandling.All,
-			Formatting = Formatting.Indented
-		};
-
 		private void saveToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			var d = new SaveFileDialog();
@@ -82,6 +74,31 @@ namespace LogicSimulator
 					var b = new BinaryFormatter();
 					var circuit = (Circuit)b.Deserialize(f);
 					circuitViewControl1.circuit = circuit;
+					circuitViewControl1.Invalidate();
+				}
+			}
+		}
+
+		private void importButton_Click(object sender, EventArgs e)
+		{
+			// Import is like open, but the components are added to the current file instead of replacing them.
+
+			var d = new OpenFileDialog();
+			if (d.ShowDialog() == DialogResult.OK)
+			{
+				using (var f = d.OpenFile())
+				{
+					var b = new BinaryFormatter();
+					var circuit = (Circuit)b.Deserialize(f);
+
+					// The components add added with their positions relative to the centre of the screen.
+					var basePos = circuitViewControl1.ScreenCentre;
+
+					foreach (var n in circuit.Nodes)
+					{
+						circuitViewControl1.circuit.Nodes.Add(n);
+					}
+
 					circuitViewControl1.Invalidate();
 				}
 			}

@@ -74,6 +74,7 @@ namespace LogicSimulator
 			this.lightButton = new System.Windows.Forms.Button();
 			this._7segButton = new System.Windows.Forms.Button();
 			this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
+			this.importButton = new System.Windows.Forms.ToolStripMenuItem();
 			this.circuitViewControl1 = new LogicSimulator.CircuitViewControl();
 			this.menuStrip1.SuspendLayout();
 			this.flowLayoutPanel1.SuspendLayout();
@@ -97,6 +98,7 @@ namespace LogicSimulator
 			this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.newToolStripMenuItem,
             this.openToolStripMenuItem,
+            this.importButton,
             this.toolStripSeparator,
             this.saveToolStripMenuItem,
             this.saveAsToolStripMenuItem,
@@ -489,6 +491,16 @@ namespace LogicSimulator
 			this._7segButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
 			this._7segButton.UseVisualStyleBackColor = true;
 			// 
+			// importButton
+			// 
+			this.importButton.Image = ((System.Drawing.Image)(resources.GetObject("importButton.Image")));
+			this.importButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.importButton.Name = "importButton";
+			this.importButton.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.I)));
+			this.importButton.Size = new System.Drawing.Size(180, 22);
+			this.importButton.Text = "&Import";
+			this.importButton.Click += new System.EventHandler(this.importButton_Click);
+			// 
 			// circuitViewControl1
 			// 
 			this.circuitViewControl1.BackColor = System.Drawing.SystemColors.ActiveBorder;
@@ -565,6 +577,7 @@ namespace LogicSimulator
 		private System.Windows.Forms.Label label3;
 		private System.Windows.Forms.Button lightButton;
 		private System.Windows.Forms.Button _7segButton;
+		private System.Windows.Forms.ToolStripMenuItem importButton;
 	}
 }
 
