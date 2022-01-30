@@ -96,6 +96,8 @@ namespace LogicSimulator
 
 					foreach (var n in circuit.Nodes)
 					{
+						n.Rect.X += basePos.X;
+						n.Rect.Y += basePos.Y;
 						circuitViewControl1.circuit.Nodes.Add(n);
 					}
 
